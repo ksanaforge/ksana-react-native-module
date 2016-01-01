@@ -1,0 +1,31 @@
+{
+  "name": "react-native-android-kdb",
+  "description": "KDB binding for Android",
+  "version": "1.5.0",
+  "main": "index.android.js",
+  "keywords": [
+    "react-component",
+    "react-native",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ksanaforge/react-native-android-kdb.git"
+  },
+  "author": {
+    "name": "yapcheahshen@gmail.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ksanaforge/react-native-android-kdb#readme",
+  "peerDependencies": {
+    "react-native": "^0.11.0"
+  },
+  "scripts": {},
+  "maintainers": [
+    {
+      "name": "yapcheahshen",
+      "email": "yapcheahshen@gmail.com"
+    }
+  ],
+  "directories": {}
+}
