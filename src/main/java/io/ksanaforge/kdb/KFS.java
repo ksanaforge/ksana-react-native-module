@@ -59,7 +59,7 @@ public class KFS extends ReactContextBaseJavaModule {
   
   @Override
   public String getName() {
-    return "KDB";
+    return "KsanaFileSystem";
   }
 
 @ReactMethod
