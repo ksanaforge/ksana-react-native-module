@@ -27,24 +27,29 @@
 -(NSString*)getAppDirectory: (NSString*) appname {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    documentsDirectory = [NSString stringWithFormat:@"%@/%@/", documentsDirectory, appname];
+    documentsDirectory = [NSString stringWithFormat:@"%@/%@", documentsDirectory, appname];
     return documentsDirectory;
 }
+
 /*
--(NSString *)getFullPath :(NSString*)fn {
-    //append with root
-    NSString *appDirectory=[self getAppDirectory:rootPath];
-    NSString *file = [appDirectory stringByAppendingPathComponent:fn];
-    return file;
-}
- */
+    Info.plist require these two key to be set
+
+    <key>UIFiileSharingEnabled</key>
+    <true/>
+
+    <key>CFBundleDisplayName</key>
+    <string>${PRODUCT_NAME}</string>
+*/
 
 -(NSString*)getFullPath :(NSString*)fn{
-//#if TARGET_IPHONE_SIMULATOR
-//    NSString *filePath=[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fn];
-//#else
+    NSString *kdbPath=[self getAppDirectory:fn];
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:kdbPath];
+
+    if (exits) { //if kdb exists in App's Document Directory
+        return kdbPath;
+    }
+
     NSString *filePath=[[NSBundle mainBundle] pathForResource:fn ofType:@""];
-//#endif
     return filePath;
 }
 
