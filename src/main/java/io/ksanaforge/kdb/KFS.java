@@ -21,12 +21,12 @@ public class KFS extends ReactContextBaseJavaModule {
     super(reactContext);
     kfs_api = new kfs_droid();
     File vSDCard=Environment.getExternalStorageDirectory();    
-    String kdbpath= vSDCard.getPath() +"/kdb/";
+    String kdbpath= vSDCard.getPath() +"/accelon2016/";
     kfs_api.setPath(kdbpath);
 
     AssetManager am=reactContext.getAssets();
     try{
-    	copyAssetKDB(am,am.list("kdb"),kdbpath);	
+    	copyAssetKDB(am,am.list("accelon2016"),kdbpath);	
     } catch(final Exception e) {
 
     }
@@ -49,7 +49,7 @@ public class KFS extends ReactContextBaseJavaModule {
       if (!path.exists()) path.mkdirs();
 
       for (int i=0;i<files.length;i++) {
-          InputStream input=am.open("kdb/"+files[i]);
+          InputStream input=am.open("accelon2016/"+files[i]);
           final File f=new File(targetpath+files[i]);
           if (!f.exists()) {
           	copyfile(input, targetpath+files[i]);
@@ -196,7 +196,6 @@ public class KFS extends ReactContextBaseJavaModule {
 		}.execute();
 	}
 
-
 @ReactMethod
 	public void test(final Callback callback) {
 		new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
@@ -212,6 +211,36 @@ public class KFS extends ReactContextBaseJavaModule {
 				*/
 				int handle=kfs_api.open("moedict.kdb");
 				callback.invoke(null,handle);
+			}
+		}.execute();
+	}	
+
+@ReactMethod
+	public void listKdb(final Callback callback) {
+		new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
+			@Override
+			protected void doInBackgroundGuarded(Void ...params) {
+				File vSDCard=Environment.getExternalStorageDirectory();    
+				String kdbpath= vSDCard.getPath() +"/accelon2016/";
+				
+				File f = new File(kdbpath);
+
+        File files[] = f.listFiles();
+        String kdbs="";
+        for (int i=0; i < files.length; i++) {
+        		String fn=files[i].getName();
+        		int idx=fn.indexOf(".kdb");
+        		if (idx>0) {
+	        		fn=fn.substring(0,fn.length()-4);
+	        		if (kdbs.length()>0) {
+	        			kdbs=kdbs+"\uffff"+fn;	
+	        		} else {
+	        			kdbs=fn;
+	        		}        			
+        		}
+        }
+
+				callback.invoke(kdbs);
 			}
 		}.execute();
 	}	
