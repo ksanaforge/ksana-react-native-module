@@ -45,7 +45,7 @@
     NSString *kdbPath=[self getAppDirectory:fn];
     BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:kdbPath];
 
-    if (exits) { //if kdb exists in App's Document Directory
+    if (exists) { //if kdb exists in App's Document Directory
         return kdbPath;
     }
 
@@ -142,7 +142,7 @@
 -(NSNumber *)getFileSize:(NSNumber *)handle {
     NSFileHandle *h=[self handleByFid :handle.intValue];
     uint64_t fileSize = [h seekToEndOfFile];
-    return [NSNumber numberWithLongLong:fileSize];
+    return [NSNumber numberWithLong:fileSize];
 }
 -(NSString *)readSignature:(NSNumber *)handle pos:(NSNumber *)pos {
     NSFileHandle *h=[self handleByFid :handle.intValue];

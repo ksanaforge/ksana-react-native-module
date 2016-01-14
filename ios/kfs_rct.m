@@ -40,7 +40,7 @@ RCT_EXPORT_METHOD(open:(NSString*) fn callback:(RCTResponseSenderBlock)callback)
     
 }
 
-RCT_EXPORT_METHOD(getFileSize:(NSNumber*) handle callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(getFileSize:(nonnull NSNumber*) handle callback:(RCTResponseSenderBlock)callback) {
     NSNumber *res=[kfs getFileSize:handle];
     callback(@[res]);
     
@@ -54,57 +54,57 @@ RCT_EXPORT_METHOD(listApps: (RCTResponseSenderBlock)callback)
 
 
 
-RCT_EXPORT_METHOD(readSignature:(NSNumber*)handle pos:(NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readSignature:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
     NSString* res=[kfs readSignature:handle pos:pos];
     callback(@[res]);
 }
 
-RCT_EXPORT_METHOD(readInt32:(NSNumber*)handle pos:(NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readInt32:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
     NSNumber* res=[kfs readInt32:handle pos:pos];
     callback(@[res]);
 }
 
-RCT_EXPORT_METHOD(readUInt8:(NSNumber*)handle pos:(NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readUInt8:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
     NSNumber* res=[kfs readUInt8:handle pos:pos];
     callback(@[res]);
 }
 
-RCT_EXPORT_METHOD(readUInt32:(NSNumber*)handle pos:(NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readUInt32:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos callback:(RCTResponseSenderBlock)callback) {
     NSNumber* res=[kfs readUInt32:handle pos:pos];
     callback(@[res]);
 }
 
-RCT_EXPORT_METHOD(readUTF8String:(NSNumber*)handle pos:(NSNumber*)pos size:(NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readUTF8String:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos size:(nonnull NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
     NSString* res=[kfs readUTF8String:handle pos:pos size:size];
     callback(@[res]);
 }
 
-RCT_EXPORT_METHOD(readULE16String:(NSNumber*)handle pos:(NSNumber*)pos size:(NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readULE16String:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos size:(nonnull NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
     NSString* res=[kfs readULE16String:handle pos:pos size:size];
     callback(@[res]);
 }
 
 
-RCT_EXPORT_METHOD(readBuf:(NSNumber*)handle pos:(NSNumber*)pos size:(NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readBuf:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos size:(nonnull NSNumber*)size callback:(RCTResponseSenderBlock)callback) {
     NSArray* res=[kfs readBuf:handle pos:pos size:size];
     callback(@[res]);
 }
 
 
-RCT_EXPORT_METHOD(readBuf_packedint:(NSNumber*)handle pos:(NSNumber*)pos size:(NSNumber*)size count:(NSNumber *)count reset:(NSNumber *)reset callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readBuf_packedint:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos size:(nonnull NSNumber*)size count:(nonnull NSNumber *)count reset:(nonnull NSNumber *)reset callback:(RCTResponseSenderBlock)callback) {
     NSDictionary* res=[kfs readBuf_packedint:handle pos:pos size:size count:count reset:reset];
     callback(@[res]);
 }
 
 
-RCT_EXPORT_METHOD(readFixedArray:(NSNumber*)handle pos:(NSNumber*)pos count:(NSNumber *)count unitsz:(NSNumber *)unitsz callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readFixedArray:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos count:(nonnull NSNumber *)count unitsz:(nonnull NSNumber *)unitsz callback:(RCTResponseSenderBlock)callback) {
     NSArray* res=[kfs readFixedArray:handle pos:pos count:count unitsz:unitsz];
     callback(@[res]);
 }
 
 
 
-RCT_EXPORT_METHOD(readStringArray:(NSNumber*)handle pos:(NSNumber*)pos size:(NSNumber*)size enc:(NSString *)enc callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(readStringArray:(nonnull NSNumber*)handle pos:(nonnull NSNumber*)pos size:(nonnull NSNumber*)size enc:(NSString *)enc callback:(RCTResponseSenderBlock)callback) {
     NSString* res=[kfs readStringArray:handle pos:pos size:size enc:enc];
     callback(@[res]);
 }
