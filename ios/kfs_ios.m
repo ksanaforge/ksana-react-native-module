@@ -465,12 +465,14 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
 -(NSString*) mergePostings:(NSNumber*)handle positions:(NSArray*)positions{
     NSFileHandle *h=[self handleByFid :handle.intValue];    if (!h) return nil;
 
+    //if ([positions[0] integerValue]==0) return @""; //dirty hack, should prevent this in kse
     uint64_t nposting=[positions count];
     uint32_t ** postings=malloc(nposting*sizeof(uint32_t *));
     uint32_t *postingsize=malloc(nposting*sizeof(uint32_t));
     uint32_t *wildcardposting=0;
     for (int i=0;i<nposting;i++) {
         NSArray *bpos=positions[i];
+      
         uint32_t pos=((NSNumber*)bpos[0]).intValue +1 ; //skip signature
         uint32_t blocksz=((NSNumber*)bpos[1]).intValue ;
         
@@ -507,7 +509,7 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
     return outputstr;
 }
 
--(NSString*) listApps{
+-(NSString*) listKdb{
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
@@ -521,31 +523,18 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
     
     for (int i = 0; i < [subFolders count]; i++) {
         NSString *urlString = [subFolders[i] absoluteString];
-        NSString *dbid=[urlString lastPathComponent];
-        NSString *ksanajs=[urlString stringByAppendingString:@"ksana.js"];
-        NSRange newRange =NSMakeRange(7, ksanajs.length -7 );
-        ksanajs=[ksanajs substringWithRange:newRange];
-        
-        if ([fileManager fileExistsAtPath:ksanajs]) {
-            NSData *data=[NSData dataWithContentsOfFile:ksanajs];
-            NSRange range=NSMakeRange(14,data.length-15) ;
-            data = [data subdataWithRange:range ];
-                                                       
-            NSDictionary *obj=[NSJSONSerialization JSONObjectWithData:data options: kNilOptions error:&error];
-            
-            if (obj) {
-                NSMutableDictionary *o=[obj mutableCopy];
-                [o setObject:dbid forKey:@"dbid"];
-                [o setObject:dbid forKey:@"path"];
-                [apps addObject:o];
-            }
+        NSString *fn=[urlString lastPathComponent];
+        NSString *type = [fn pathExtension];
+      
+        if ([type isEqualToString:@"kdb"]) {
+          NSRange newRange =NSMakeRange(0, fn.length -4 );
+          NSString *dbid=[fn substringWithRange:newRange];
+          
+          [apps addObject:dbid];
         }
     }
-    
-    NSData *apps_data=[NSJSONSerialization dataWithJSONObject:apps options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *outstr=[[NSString alloc] initWithData:apps_data encoding:NSUTF8StringEncoding];
+    NSString *outstr=[apps componentsJoinedByString:@"\uffff"];
     return outstr;
-    
 }
 
 -(NSNumber*) deleteApp:(NSString*) appname {

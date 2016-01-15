@@ -45,11 +45,10 @@ RCT_EXPORT_METHOD(getFileSize:(nonnull NSNumber*) handle callback:(RCTResponseSe
     callback(@[res]);
     
 }
-RCT_EXPORT_METHOD(listApps: (RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(listKdb: (RCTResponseSenderBlock)callback)
 {
-    NSString *res=[kfs listApps];
-    callback(@[res]);
-    
+  NSString *res=[kfs listKdb];
+  callback(@[res]);
 }
 
 
@@ -111,8 +110,8 @@ RCT_EXPORT_METHOD(readStringArray:(nonnull NSNumber*)handle pos:(nonnull NSNumbe
 
 
 
-RCT_EXPORT_METHOD(mergePostings:(NSNumber*)handle positions:(NSArray*)positions callback:(RCTResponseSenderBlock)callback) {
-    NSString* res=[kfs mergePostings:handle  positions:positions];
+RCT_EXPORT_METHOD(mergePostings:(nonnull NSNumber*)handle positions:(NSArray*)positions callback:(RCTResponseSenderBlock)callback) {
+    NSArray* res=[kfs mergePostings:handle  positions:positions];
     callback(@[res]);
 }
 
