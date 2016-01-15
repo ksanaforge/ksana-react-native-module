@@ -22,7 +22,7 @@ JSExportAs(readDir,          - (NSString*)readDir:(NSString*)path);
 JSExportAs(mergePostings,    - (NSString*) mergePostings:(NSNumber*)handle positions:(NSArray*)positions);
 JSExportAs(deleteApp,        - (NSNumber*)deleteApp:(NSString*)appname);
 
--(NSString*) listApps;
+-(NSString*) listKdb;
 
 
 //- (void)setViewController :(UIViewController*)vc;
