@@ -1,4 +1,3 @@
-// CalendarManager.h
 #import "RCTBridgeModule.h"
 
 @interface KsanaFileSystem : NSObject <RCTBridgeModule>
