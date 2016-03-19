@@ -1,4 +1,8 @@
-	// CalendarManager.m
+/*
+  React Native Module for Ksana Database
+  author: yapcheahshen@gmail.com
+  this file is release under GPL 3.0
+*/
 #include "kfs_rct.h"
 #include "kfs_ios.h"
 @implementation KsanaFileSystem

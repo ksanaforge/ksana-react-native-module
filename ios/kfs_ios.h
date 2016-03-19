@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-//#import <UIKit/UIKit.h>
 @import JavaScriptCore;
 @protocol KFSExport <JSExport>
 
@@ -25,8 +24,6 @@ JSExportAs(deleteApp,        - (NSNumber*)deleteApp:(NSString*)appname);
 -(NSString*) listKdb;
 -(NSString*) listStockKdb;
 
-
-//- (void)setViewController :(UIViewController*)vc;
 @end
 
 @interface kfs_ios: NSObject <KFSExport> {
