@@ -23,6 +23,7 @@ JSExportAs(mergePostings,    - (NSString*) mergePostings:(NSNumber*)handle posit
 JSExportAs(deleteApp,        - (NSNumber*)deleteApp:(NSString*)appname);
 
 -(NSString*) listKdb;
+-(NSString*) listStockKdb;
 
 
 //- (void)setViewController :(UIViewController*)vc;

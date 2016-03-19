@@ -25,7 +25,7 @@
 //}
 
 -(NSString*)getAppDirectory: (NSString*) appname {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     documentsDirectory = [NSString stringWithFormat:@"%@/%@", documentsDirectory, appname];
     return documentsDirectory;
@@ -88,22 +88,26 @@
             fileopened++;
             [opened_fid setObject :[NSNumber numberWithInt: fileopened] forKey:fn] ;
         } else {
-            return [NSNumber numberWithInt:0];
+          NSString *kdbPath=[self getAppDirectory:fn];
+          NSLog(@"cannot open file in %@",kdbPath);
+          return [NSNumber numberWithInt:0];
         }
     }
     return [NSNumber numberWithInt:fileopened];
 }
 
 -(NSNumber*)close:(NSNumber*)handle {
-    NSString* fn=[self filenameByFid :handle.intValue];
-    if (fn) {
-        [[opened objectForKey:fn] closeFile];
-        [opened removeObjectForKey:fn];
-        [opened_fid removeObjectForKey:fn];
-        return [NSNumber numberWithBool:true];
-    }
-    return [NSNumber numberWithBool:false];
+  NSString* fn=[self filenameByFid :handle.intValue];
+  if (fn) {
+    [[opened objectForKey:fn] closeFile];
+    [opened removeObjectForKey:fn];
+    [opened_fid removeObjectForKey:fn];
+    return [NSNumber numberWithBool:true];
+  }
+  return [NSNumber numberWithBool:false];
 }
+
+
 
 -(NSString*) getFileNameOnly:(NSString*)path{
     NSRange range = [path rangeOfString:@"/" options:NSBackwardsSearch];
@@ -128,7 +132,7 @@
         }
     
     }
-    NSString *stringPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:path];
+    NSString *stringPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)objectAtIndex:0]stringByAppendingPathComponent:path];
     
     NSArray *subFolders = [fileManager contentsOfDirectoryAtURL:[NSURL URLWithString:stringPath] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:&error];
     NSString *dirs=@"";
@@ -509,13 +513,10 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
     return outputstr;
 }
 
--(NSString*) listKdb{
+-(NSString*) list :(NSString *)stringPath{
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    
-    
-    NSString *stringPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSError *error;
     
     NSArray *subFolders = [fileManager contentsOfDirectoryAtURL:[NSURL URLWithString:stringPath] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:&error];
     
@@ -535,6 +536,17 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
     }
     NSString *outstr=[apps componentsJoinedByString:@"\uffff"];
     return outstr;
+}
+
+-(NSString*) listKdb {
+  NSString *stringPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+  return [self list:stringPath];
+}
+
+
+-(NSString*) listStockKdb {
+  NSString *bundlePath = [[NSBundle mainBundle] resourcePath];
+  return [self list:bundlePath];
 }
 
 -(NSNumber*) deleteApp:(NSString*) appname {

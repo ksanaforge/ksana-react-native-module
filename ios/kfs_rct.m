@@ -10,7 +10,6 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)name location:(NSString *)location)
     //RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
 }
 
-
 -(boolean_t) copyFile:(NSURL*)source target:(NSString*)targetFile {
     NSError *error = nil;
     NSFileManager *fm=[NSFileManager defaultManager];
@@ -39,7 +38,11 @@ RCT_EXPORT_METHOD(open:(NSString*) fn callback:(RCTResponseSenderBlock)callback)
     callback(@[res]);
     
 }
-
+RCT_EXPORT_METHOD(close:(nonnull NSNumber*) fid callback:(RCTResponseSenderBlock)callback) {
+  NSNumber *res=[kfs close:fid];
+  callback(@[res]);
+  
+}
 RCT_EXPORT_METHOD(getFileSize:(nonnull NSNumber*) handle callback:(RCTResponseSenderBlock)callback) {
     NSNumber *res=[kfs getFileSize:handle];
     callback(@[res]);
@@ -48,6 +51,11 @@ RCT_EXPORT_METHOD(getFileSize:(nonnull NSNumber*) handle callback:(RCTResponseSe
 RCT_EXPORT_METHOD(listKdb: (RCTResponseSenderBlock)callback)
 {
   NSString *res=[kfs listKdb];
+  callback(@[res]);
+}
+RCT_EXPORT_METHOD(listStockKdb: (RCTResponseSenderBlock)callback)
+{
+  NSString *res=[kfs listStockKdb];
   callback(@[res]);
 }
 
@@ -111,12 +119,54 @@ RCT_EXPORT_METHOD(readStringArray:(nonnull NSNumber*)handle pos:(nonnull NSNumbe
 
 
 RCT_EXPORT_METHOD(mergePostings:(nonnull NSNumber*)handle positions:(NSArray*)positions callback:(RCTResponseSenderBlock)callback) {
-    NSArray* res=[kfs mergePostings:handle  positions:positions];
+    NSString* res=[kfs mergePostings:handle  positions:positions];
     callback(@[res]);
 }
 
 - (NSDictionary*) constantsToExport {
     return @{ @"async":@true };
+}
+
+- (NSString *)getPathForDirectory:(int)directory
+{
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(directory, NSUserDomainMask, YES);
+  return [paths firstObject];
+}
+RCT_EXPORT_METHOD(kdbExists:(NSString*)filename callback:(RCTResponseSenderBlock)callback) {
+    NSFileManager *fm=[NSFileManager defaultManager];
+  
+  NSString *targetPath=[self getPathForDirectory:NSCachesDirectory];
+  NSString *fn = [NSString stringWithFormat:@"%@/%@.kdb", targetPath, filename];
+  
+  BOOL exists=[fm fileExistsAtPath:fn];
+  NSNumber *n=[NSNumber numberWithBool:exists];
+    callback(@[n]);
+}
+RCT_EXPORT_METHOD(download:(NSString *)source targetPath:(NSString *)targetPath callback:(RCTResponseSenderBlock)callback) {
+    NSURL *URL = [NSURL URLWithString:source];
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    if ([targetPath isEqualToString:@""]) targetPath=[self getPathForDirectory:NSCachesDirectory];
+
+    NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithRequest:request
+                                                            completionHandler:
+                                              ^(NSURL *location, NSURLResponse *response, NSError *error) {
+                                                  if (!error) {
+                                                      NSURL *targetDirectoryURL = [NSURL fileURLWithPath:targetPath];
+                                                      NSURL *targetURL = [targetDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+                                                      [[NSFileManager defaultManager] moveItemAtURL:location
+                                                                                              toURL:targetURL
+                                                                                              error:nil];
+                                                      callback(@[[NSNull null], targetURL.absoluteString]);
+                                                  } else {
+                                                      NSLog(@"%@", [error description]);
+                                                      callback(@[[error description]]);
+                                                  }
+                                              }
+                                              ];
+    
+    [downloadTask resume];
 }
 
 - (id) init
