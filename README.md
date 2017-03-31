@@ -3,7 +3,16 @@
 
 ## Rationale
 
-fast access to KDB file on android
+fast access to KDB file on React Native
+
+## Setup for iOS
+   initialize a React Native Project
+
+   git clone ksanaforge/ksana-corpus ksanaforge/ksana-corpus-rom ksanaforge/ksana-corpus-search
+
+   drag *.cor file to project, click the file and tick project name in "Target membership", otherwise the file cannot be found by simulator and device
+
+   javascript API is same as web, openCorpus, cor.get and so on.
 
 ## Setup
 
@@ -72,7 +81,3 @@ So, the first step involves copying your kdb db to the following folder
 
 Substitute `<ReactNativeRootFolder>` for the folder where your app resides, i.e. AwesomeProject.
 
-
-## LICENSE
-
-MIT

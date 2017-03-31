@@ -527,7 +527,7 @@ uint32_t *phraseSearch (uint32_t** postings, uint32_t *postingsize, uint64_t npo
         NSString *fn=[urlString lastPathComponent];
         NSString *type = [fn pathExtension];
       
-        if ([type isEqualToString:@"kdb"]) {
+        if ([type isEqualToString:@"cor"]) {
           NSRange newRange =NSMakeRange(0, fn.length -4 );
           NSString *dbid=[fn substringWithRange:newRange];
           
